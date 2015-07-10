@@ -1,0 +1,71 @@
+Phase: Targetloc6
+Input:  targetEvent  
+Options: control = appelt
+
+
+Rule: Targetloc3 
+(
+{targetEvent}
+):event 
+-->
+:event
+ {
+
+	   AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("event");
+	  for(Annotation event : matchedAnns){
+ if (inputAS.get("Lookup", event.firstNode().getOffset(),
+                      event.lastNode().getOffset() ).size()>0)
+	{ 
+AnnotationSet targetLookup = inputAS.get("Lookup").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+
+   
+  Node start = matchedAnns.firstNode();
+  Node end = matchedAnns.lastNode();
+  
+  gate.FeatureMap newFeatures= Factory.newFeatureMap();
+newFeatures.put("rule","Sentence relationship match");
+String text="";
+ for(Annotation ann : targetLookup)
+{ 
+ try{
+ String lookupEvent = (String) annotation.getFeatures().get("majorType");
+if(lookupEvent==event){
+      try {
+  String text = doc.getContent().(ann.firstNode().getOffset(), ann.lastNode().getOffset()).toString();
+         } 
+      catch (InvalidOffsetException e) {
+       throw new LuckyException(e);  }
+      }}}
+ String[] finalEvent=new String[5];   
+
+ }
+  
+  
+
+ 
+  if(content.length()>finalEvent.length())
+finalEvent =content; 
+newFeatures.put("finalEvent",finalEvent);
+
+
+catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ }
+ 
+ 
+  
+ 
+ 
+ 
+  try{
+  annotations.add(start.getOffset(),end.getOffset(),"finalMatch", newFeatures);
+ }catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ 
+ 
+ }
+ 
+ }
+

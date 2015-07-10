@@ -1,0 +1,19 @@
+<!-- creole.xml finalEventMatch -->
+<!--  Administrator, 9/4/2014 -->
+
+<!--
+This file just references the JAR file that contains the compiled resource.
+Configuration is contained in the @CreoleResource annotation on 
+finalEventMatch.finalEventMatch.
+-->
+
+
+<CREOLE-DIRECTORY>
+  <JAR SCAN="true">finalEventMatch.jar</JAR>
+   <RESOURCE>
+  <NAME>finalEventMatcher</NAME>
+  <CLASS>finalEventMatch.finalEventMatch</CLASS>
+  <COMMENT>A finalEventMatch TAGGER</COMMENT> 
+   <INTERFACE>gate.Document</INTERFACE>
+  </RESOURCE>
+</CREOLE-DIRECTORY>

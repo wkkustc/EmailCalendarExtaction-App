@@ -1,0 +1,28 @@
+Phase: Targetloc
+Input:  Token targetEvent NounChunk
+Options: control = appelt
+
+
+Rule: Targetloc4
+(
+{targetEvent} 
+({Token})?
+({Token.string == "in"}|{Token.string == "at"})
+({NounChunk}):location2
+):location 
+-->
+:location
+{
+  AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("location2");
+  
+  if (inputAS.get("Date", matchedAnns.firstNode().getOffset(),
+                      matchedAnns.lastNode().getOffset() ).isEmpty())
+	  try{
+	    gate.FeatureMap newFeatures= Factory.newFeatureMap();
+newFeatures.put("rule","targetLoc4");
+ annotations.add(matchedAnns.firstNode().getOffset(),
+      matchedAnns.lastNode().getOffset(),"targetLocation", newFeatures);
+ }catch(InvalidOffsetException e){
+   throw new LuckyException(e); }
+				  
+					  }

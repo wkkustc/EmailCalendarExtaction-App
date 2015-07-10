@@ -1,0 +1,47 @@
+Phase: HasRelations
+
+Input: Person UniversityPosition 
+
+ 
+
+Rule: BelongtoRealtion
+
+(
+({UniversityPosition}):c2
+({Person}):c1
+
+
+
+):hasRealtion1
+
+ 
+
+-->
+
+:hasRealtion1
+
+  {
+
+    try{ gate.AnnotationSet matchedCompanies=(gate.AnnotationSet) bindings.get("c1");
+    Annotation person1=matchedCompanies.iterator().next();
+String content1 = doc.getContent().getContent(person1.getStartNode().getOffset(),
+                 person1.getEndNode().getOffset()).toString();
+ 
+    gate.AnnotationSet matchedCompanies2=(gate.AnnotationSet) bindings.get("c2");
+    Annotation position1=matchedCompanies2.iterator().next();
+    String content2 = doc.getContent().getContent(position1.getStartNode().getOffset(),
+                 position1.getEndNode().getOffset()).toString();
+
+    gate.AnnotationSet matchedAnns= (gate.AnnotationSet) bindings.get("hasRealtion1");      
+    gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    newFeatures.put("Person1",person1);
+    newFeatures.put("Position1",position1);
+    newFeatures.put("rule"," hasposition2");
+    newFeatures.put("dom",content1);
+    newFeatures.put("ran",content2);
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"hasPositionRelation", newFeatures);}
+catch(InvalidOffsetException ioe){
+      //this should never happen
+      throw new GateRuntimeException(ioe);
+    }
+  }

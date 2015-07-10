@@ -1,0 +1,15 @@
+Phase: Targetloc
+Input:  Token  NounChunk
+Options: control = appelt
+
+
+Rule: Targetloc2
+(
+({Token.string == "PLACE"}|{Token.string == "place"}|{Token.string == "Place"})
+ {Token.kind == "punctuation"} 
+ ({NounChunk}):location2
+):location 
+-->
+:location2.targetLocation = {rule = tagetLoc2}
+
+

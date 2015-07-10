@@ -1,0 +1,19 @@
+<!-- creole.xml PrintCalendar -->
+<!--  Administrator, 13/4/2014 -->
+
+<!--
+This file just references the JAR file that contains the compiled resource.
+Configuration is contained in the @CreoleResource annotation on 
+PrintCalendar.printCalendar.
+-->
+
+
+
+<CREOLE-DIRECTORY>
+  <JAR SCAN="true">PrintCalendar.jar</JAR>
+   <RESOURCE>
+  <NAME>PrintCalendar</NAME>
+  <CLASS>PrintCalendar.printCalendar</CLASS>
+  <COMMENT>A University TAGGER</COMMENT> 
+  </RESOURCE>
+</CREOLE-DIRECTORY>

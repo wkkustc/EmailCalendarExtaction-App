@@ -1,0 +1,29 @@
+Phase: futuredates
+Input:  Token Lookup
+Options: control = appelt
+
+
+Rule: University3 
+(
+ ({Token.string == "NEXT"}|{Token.string == "next"}|{Token.string == "Next"})
+  {Lookup.minorType == day} 
+):selfdefine
+-->
+:selfdefine
+{
+
+	   AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("selfdefine");
+  AnnotationSet commentTokensAs = inputAS.get("Date").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+
+ gate.Annotation ann = (gate.Annotation) commentTokensAs.iterator().next();
+ 
+ gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    newFeatures.put("rule","futureDate");
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"Date", newFeatures);
+	inputAS.remove(ann);	
+}
+
+
+

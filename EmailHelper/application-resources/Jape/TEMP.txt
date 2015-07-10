@@ -1,0 +1,89 @@
+Phase: CompanyRelations
+
+Input: Person Token UniversityPosition University  
+
+ 
+
+Rule: BelongtoRealtion
+
+(
+
+({Person}):c1
+({Token.string ==","})?
+({UniversityPosition}):c2
+({Token.string ==","})?
+({University}):c3 
+
+):belongtoRealtion1
+
+ 
+
+-->
+
+:belongtoRealtion1
+
+  {
+
+    gate.AnnotationSet matchedCompanies=(gate.AnnotationSet) bindings.get("c1");
+    Annotation person1=matchedCompanies.iterator().next();
+    gate.AnnotationSet matchedCompanies2=(gate.AnnotationSet) bindings.get("c2");
+    Annotation position1=matchedCompanies2.iterator().next();
+    gate.AnnotationSet matchedVerb=(gate.AnnotationSet) bindings.get("c3");
+    Annotation university1=matchedVerb.iterator().next();
+    gate.AnnotationSet matchedAnns= (gate.AnnotationSet) bindings.get("belongtoRealtion1");      
+    gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    newFeatures.put("Person1",person1);
+    newFeatures.put("Position1",position1);
+    newFeatures.put("University1",university1);
+    newFeatures.put("rule","belongtoRealtion1");
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"belongtoRealtion1", newFeatures);
+
+  
+
+  }
+
+
+
+
+Phase: CompanyRelations
+
+Input: Person UniversityPosition University  
+
+ 
+
+Rule: BelongtoRealtion
+
+(
+
+({Person}):c1
+({UniversityPosition}):c2
+({University}):c3 
+
+):belongtoRealtion1
+
+ 
+
+-->
+
+:belongtoRealtion1
+
+  {
+
+    gate.AnnotationSet matchedCompanies=(gate.AnnotationSet) bindings.get("c1");
+    Annotation person1=matchedCompanies.iterator().next();
+    gate.AnnotationSet matchedCompanies2=(gate.AnnotationSet) bindings.get("c2");
+    Annotation position1=matchedCompanies2.iterator().next();
+    gate.AnnotationSet matchedVerb=(gate.AnnotationSet) bindings.get("c3");
+    Annotation university1=matchedVerb.iterator().next();
+    gate.AnnotationSet matchedAnns= (gate.AnnotationSet) bindings.get("belongtoRealtion1");      
+    gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    newFeatures.put("Person1",person1);
+    newFeatures.put("Position1",position1);
+    newFeatures.put("University1",university1);
+    newFeatures.put("rule","belongtoRealtion1");
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"belongtoRealtion1", newFeatures);
+
+  
+
+  }
+

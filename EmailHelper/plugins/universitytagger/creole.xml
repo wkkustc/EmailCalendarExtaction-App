@@ -1,0 +1,17 @@
+<!-- creole.xml universitytagger -->
+<!--  Administrator, 8/2/2014 -->
+
+<!--
+This file just references the JAR file that contains the compiled resource.
+Configuration is contained in the @CreoleResource annotation on 
+universitytagger.Universitytagger.
+-->
+
+<CREOLE-DIRECTORY>
+  <JAR SCAN="true">universitytagger.jar</JAR>
+   <RESOURCE>
+  <NAME>universitytagger</NAME>
+  <CLASS>universitytagger.Universitytagger</CLASS>
+  <COMMENT>A University TAGGER</COMMENT> 
+  </RESOURCE>
+</CREOLE-DIRECTORY>

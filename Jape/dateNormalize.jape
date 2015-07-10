@@ -1,0 +1,57 @@
+Phase: DateNormalize
+
+Input: Date  
+
+ 
+Rule: DateNormalize1
+
+(
+
+ {Date} 
+ 
+):DateNormalize
+
+ 
+
+-->
+
+:DateNormalize
+
+  {
+
+       try{ 
+	gate.AnnotationSet matchedDate=(gate.AnnotationSet) bindings.get("DateNormalize");
+    Annotation person1=matchedDate.iterator().next();
+String content1 = doc.getContent().getContent(person1.getStartNode().getOffset(),
+                 person1.getEndNode().getOffset()).toString();
+		String targetDate = content1.toLowerCase();	
+		
+ AnnotationSet sentDate = doc.getAnnotations().get("emailSentDate");
+    Annotation emailSent1=sentDate.iterator().next();
+ String baseYear= emailSent1.getFeatures().get("EmailSentYear").toString();   
+  String baseMonth= emailSent1.getFeatures().get("EmailSentMonth").toString();   	
+  String baseDay= emailSent1.getFeatures().get("EmailSentDay").toString();  
+  String baseDate= baseYear+"-"+baseMonth+"-"+baseDay;
+  SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+  java.util.Date bd=sdf.parse(baseDate);
+  
+	 if (targetDate.startsWith("today")
+	 {String targetYear=baseYear;
+	 String targetMonth=baseMonth;
+	 String targetDay=baseDay;
+	 }
+	 
+    gate.AnnotationSet matchedAnns= (gate.AnnotationSet) bindings.get("DateNormalize");      
+    gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    newFeatures.put("Year",baseYear);
+    newFeatures.put("Month",baseYear);
+    newFeatures.put("Day",baseYear);
+    newFeatures.put("rule","DateNormalize");
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"NormalizedDate", newFeatures);}
+catch(InvalidOffsetException ioe){
+      //this should never happen
+      throw new GateRuntimeException(ioe);
+    }
+  }
+  
+DateTime nextTuesday = DateTime.Today.AddDays(((int)DateTime.Today.DayOfWeek - (int)DayOfWeek.Tuesday) + 7);

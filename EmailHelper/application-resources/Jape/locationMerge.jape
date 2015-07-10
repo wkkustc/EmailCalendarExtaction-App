@@ -1,0 +1,37 @@
+Phase: Targetloc5
+Input:  Sentence  
+Options: control = appelt
+
+
+Rule: Targetloc3 
+(
+{Sentence}
+):location 
+-->
+:location
+ {
+
+	   AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("location");
+  
+  if (inputAS.get("targetLocation", matchedAnns.firstNode().getOffset(),
+                      matchedAnns.lastNode().getOffset() ).isEmpty());
+					  
+else{ 
+AnnotationSet targetLocation = inputAS.get("targetLocation").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+	
+  Node start = targetLocation.firstNode();
+  Node end   = targetLocation.lastNode();
+  gate.FeatureMap newFeatures= Factory.newFeatureMap();
+  newFeatures.put("rule","mergeLocation");
+for(Annotation ann : targetLocation)
+{inputAS.remove(ann);}
+  try{
+ annotations.add(start.getOffset(),end.getOffset(),"targetLocation", newFeatures);
+ }
+catch(InvalidOffsetException e){
+   throw new LuckyException(e);
+ }}}
+
+

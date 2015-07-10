@@ -1,0 +1,91 @@
+Phase: Targetloc8
+Input:  Sentence  
+Options: control = appelt
+
+
+Rule: Targetloc3 
+(
+{Sentence}
+):location 
+-->
+:location
+ {
+    if(doc.getAnnotations().get("finalMatch").size()==0)
+	 {
+	 AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("location");
+  if (inputAS.get("targetLocation", matchedAnns.firstNode().getOffset(),
+                      matchedAnns.lastNode().getOffset() ).size()>0&&inputAS.get("targetEvent", matchedAnns.firstNode().getOffset(),
+                      matchedAnns.lastNode().getOffset() ).size()>0)
+{
+AnnotationSet targetLocation = inputAS.get("targetLocation").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+AnnotationSet targetEvent= inputAS.get("targetEvent").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+
+  Node start = targetEvent.firstNode();
+  Node end = targetEvent.lastNode();
+  gate.FeatureMap newFeatures= Factory.newFeatureMap();
+newFeatures.put("rule","Sentence relationship match");
+ newFeatures.put("relationship","partialRealtionMatch");
+String finalLoc="";
+String finalTime="";
+String finalEvent="";
+newFeatures.put("finalTime",finalTime);
+for(Annotation ann : targetLocation)
+{ 
+ try{
+ String content = doc.getContent().getContent(ann.getStartNode().getOffset(),
+                 ann.getEndNode().getOffset()).toString();
+ if(content.length()>finalLoc.length())
+finalLoc=content; 
+newFeatures.put("finalLoc",finalLoc);
+ }
+catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ }
+ 
+ 
+ for(Annotation ann : targetEvent)
+{ 
+ try{
+String content="";
+if(ann.getFeatures().containsKey("antecedent_offset")){
+boolean found = false;
+Long antecedentOffset = Long.parseLong(ann.getFeatures().get("antecedent_offset").toString());
+  List matches = (List) ann.getFeatures().get("matches");
+    Annotation antecedent = null;
+    for (Object id : matches) {
+      antecedent = inputAS.get((Integer) id);
+      if (antecedent.getStartNode().getOffset().equals(antecedentOffset)) {
+        found = true;
+        break;
+      }}
+ if (found)  {
+      Long end1 = antecedent.getEndNode().getOffset();
+      try {
+      content = doc.getContent().getContent(antecedentOffset, end1).toString();
+         } 
+      catch (InvalidOffsetException e) {
+       throw new LuckyException(e);  
+      }}
+	  else{content ="antecedentOffset error";}}
+ else{ content = doc.getContent().getContent(ann.getStartNode().getOffset(),
+                 ann.getEndNode().getOffset()).toString();}
+ if(content.length()>finalEvent.length())
+finalEvent =content; 
+newFeatures.put("finalEvent",finalEvent);
+ }
+catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ }
+ 
+ try{
+  annotations.add(start.getOffset(),end.getOffset(),"finalMatch", newFeatures);}
+  catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ }
+ 
+ }}
+

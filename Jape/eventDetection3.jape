@@ -1,0 +1,14 @@
+Phase: TargetEvent
+Input: Lookup NounChunk Token
+Options: control = appelt
+
+
+Rule: University3 
+(
+{Lookup.majorType == activeEventVerb}
+({NounChunk}
+({Token.string == "of"}
+ {NounChunk})?): event
+):location 
+-->
+:event.targetEvent = {rule = targetEvent3}

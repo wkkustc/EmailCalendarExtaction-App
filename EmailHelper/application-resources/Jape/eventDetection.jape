@@ -1,0 +1,38 @@
+Phase: EventDetection
+
+Input: NounChunk
+
+Rule: TargetLocation
+
+(
+{NounChunk}
+ 
+):event
+
+-->
+
+:event
+
+  {
+
+	   AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("event");
+  AnnotationSet lookup = inputAS.get("Lookup").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+
+  for(Annotation targetEvent : lookup){
+ 
+if (targetEvent.getFeatures().get("majorType").equals("event")){
+ gate.FeatureMap newFeatures= Factory.newFeatureMap();
+ try{
+ String content = doc.getContent().getContent(targetEvent.getStartNode().getOffset(),
+                 targetEvent.getEndNode().getOffset()).toString();
+    newFeatures.put("rule","myEvent1");
+	newFeatures.put("eventRoot",content);
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"targetEvent", newFeatures);}
+	catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+}
+}
+}
+

@@ -1,0 +1,85 @@
+Phase: EmailSentDateDetection
+
+Input: Date Token
+
+ 
+
+Rule: BelongtoRealtion
+
+(
+
+{Token.string == "Date"}
+{Token.string == ":"}
+(({Token.kind == "number"}):c1
+{Token.kind == "punctuation"}
+({Token.kind == "number"}):c2
+{Token.kind == "punctuation"}
+({Token.kind == "number"}):c3):emailSentDate
+({Token})[0,2] 
+{Date}
+{Token.string == "To"}
+{Token.string == ":"}
+ 
+):emailSentDateFull 
+
+ 
+
+-->
+
+:emailSentDateFull 
+
+  {
+  AnnotationSet matchedAnns2 = (gate.AnnotationSet)bindings.get("emailSentDateFull");
+  if (inputAS.get("Date", matchedAnns2.firstNode().getOffset(),
+                      matchedAnns2.lastNode().getOffset() ).isEmpty());
+					  
+else{ 
+AnnotationSet targetDate = inputAS.get("Date").getContained(
+    matchedAnns2.firstNode().getOffset(),
+    matchedAnns2.lastNode().getOffset());
+
+outputAS.removeAll(targetDate);
+ }
+ 
+   AnnotationSet matchedAnns3 = (gate.AnnotationSet)bindings.get("emailSentDate");
+  if (inputAS.get("Date", matchedAnns2.firstNode().getOffset(),
+                      matchedAnns2.lastNode().getOffset() ).isEmpty());
+					  
+else{ 
+AnnotationSet targetDate2 = inputAS.get("Date").getContained(
+    matchedAnns2.firstNode().getOffset(),
+    matchedAnns2.lastNode().getOffset());
+
+outputAS.removeAll(targetDate2);
+ }
+
+       try{ gate.AnnotationSet matchedYear=(gate.AnnotationSet) bindings.get("c1");
+    Annotation person1=matchedYear.iterator().next();
+String content1 = doc.getContent().getContent(person1.getStartNode().getOffset(),
+                 person1.getEndNode().getOffset()).toString();
+ 
+    gate.AnnotationSet matchedMonth=(gate.AnnotationSet) bindings.get("c2");
+    Annotation position1=matchedMonth.iterator().next();
+    String content2 = doc.getContent().getContent(position1.getStartNode().getOffset(),
+                 position1.getEndNode().getOffset()).toString();
+				 
+    gate.AnnotationSet matchedDay=(gate.AnnotationSet) bindings.get("c3");
+    Annotation university1=matchedDay.iterator().next();
+    String content3 = doc.getContent().getContent(university1.getStartNode().getOffset(),
+                 university1.getEndNode().getOffset()).toString();
+
+    gate.AnnotationSet matchedAnns= (gate.AnnotationSet) bindings.get("emailSentDate");      
+    gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    newFeatures.put("EmailSentYear",content1);
+    newFeatures.put("EmailSentMonth",content2);
+    newFeatures.put("EmailSentDay",content3);
+    newFeatures.put("rule","EmailSentDateDetection");
+	
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"emailSentDate", newFeatures);}
+catch(InvalidOffsetException ioe){
+      //this should never happen
+      throw new GateRuntimeException(ioe);
+    }
+  }
+
+  

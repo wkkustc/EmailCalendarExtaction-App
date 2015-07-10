@@ -1,0 +1,59 @@
+Phase: TargetEvent
+Input:  Token Lookup NounChunk
+Options: control = appelt
+
+
+Rule: University3 
+(
+({Lookup.majorType == event}):Lookup
+({Token.string == "for"}|{Token.string == "FOR"}|{Token.string == "to"}|{Token.string == "To"})
+{NounChunk}
+
+):event
+-->
+:event 
+{
+
+	   AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("Lookup");
+  AnnotationSet matchedEvent= (gate.AnnotationSet)bindings.get("event");
+   gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    String content="";
+  for(Annotation targetEvent : matchedAnns){
+ try{
+content = doc.getContent().getContent(targetEvent.getStartNode().getOffset(),
+                 targetEvent.getEndNode().getOffset()).toString();}
+				 catch(InvalidOffsetException e){
+  throw new LuckyException(e);}}
+ for(Annotation targetEvent1 : matchedEvent){
+		 
+    newFeatures.put("rule","targetEvent4");
+	newFeatures.put("eventRoot",content);
+    annotations.add(matchedEvent.firstNode(),matchedEvent.lastNode(),"targetEvent", newFeatures);}
+	
+}
+
+Rule: University4 
+(
+({Lookup.majorType == event}):Lookup
+):event
+-->
+:event 
+{
+
+	   AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("Lookup");
+  AnnotationSet matchedEvent= (gate.AnnotationSet)bindings.get("event");
+   gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    String content="";
+  for(Annotation targetEvent : matchedAnns){
+ try{
+content = doc.getContent().getContent(targetEvent.getStartNode().getOffset(),
+                 targetEvent.getEndNode().getOffset()).toString();}
+				 catch(InvalidOffsetException e){
+  throw new LuckyException(e);}}
+ for(Annotation targetEvent1 : matchedEvent){
+		 
+    newFeatures.put("rule","targetEvent4");
+	newFeatures.put("eventRoot",content);
+    annotations.add(matchedEvent.firstNode(),matchedEvent.lastNode(),"targetEvent", newFeatures);}
+	
+}

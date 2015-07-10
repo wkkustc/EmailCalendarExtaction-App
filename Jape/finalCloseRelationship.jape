@@ -1,0 +1,119 @@
+Phase: Targetloc6
+Input:  Sentence  
+Options: control = appelt
+
+
+Rule: Targetloc3 
+(
+{Sentence}
+):location 
+-->
+:location
+ {
+
+	   AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("location");
+  
+  if (inputAS.get("targetLocation", matchedAnns.firstNode().getOffset(),
+                      matchedAnns.lastNode().getOffset() ).size()>0&&inputAS.get("targetEvent", matchedAnns.firstNode().getOffset(),
+                      matchedAnns.lastNode().getOffset() ).size()>0&&inputAS.get("NormalizedDate", matchedAnns.firstNode().getOffset(),
+                      matchedAnns.lastNode().getOffset() ).size()>0)
+	{
+AnnotationSet targetLocation = inputAS.get("targetLocation").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+AnnotationSet targetEvent= inputAS.get("targetEvent").getContained(
+    matchedAnns.firstNode().getOffset(), matchedAnns.lastNode().getOffset());
+AnnotationSet NormalizedDate = inputAS.get("NormalizedDate").getContained(
+    matchedAnns.firstNode().getOffset(),matchedAnns.lastNode().getOffset());
+  Node start = matchedAnns.firstNode();
+  Node end = matchedAnns.lastNode();
+  gate.FeatureMap newFeatures= Factory.newFeatureMap();
+newFeatures.put("rule","Sentence relationship match");
+String finalLoc="";
+String finalTime="";
+String finalEvent="";
+
+for(Annotation ann : targetLocation)
+{ 
+ try{
+ String content = doc.getContent().getContent(ann.getStartNode().getOffset(),
+                 ann.getEndNode().getOffset()).toString();
+ if(content.length()>finalLoc.length())
+finalLoc=content; 
+newFeatures.put("finalLoc",finalLoc);
+ }
+catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ }
+ 
+ 
+ for(Annotation ann : targetEvent)
+{ 
+ try{
+String content="";
+if(ann.getFeatures().containsKey("antecedent_offset")){
+boolean found = false;
+Long antecedentOffset = Long.parseLong(ann.getFeatures().get("antecedent_offset").toString());
+  List matches = (List) ann.getFeatures().get("matches");
+    Annotation antecedent = null;
+    for (Object id : matches) {
+      antecedent = inputAS.get((Integer) id);
+      if (antecedent.getStartNode().getOffset().equals(antecedentOffset)) {
+        found = true;
+        break;
+      }}
+ if (found)  {
+      Long end1 = antecedent.getEndNode().getOffset();
+      try {
+      content = doc.getContent().getContent(antecedentOffset, end1).toString();
+         } 
+      catch (InvalidOffsetException e) {
+       throw new LuckyException(e);  
+      }}
+	  else{content ="antecedentOffset error";}}
+ else{ content = doc.getContent().getContent(ann.getStartNode().getOffset(),
+                 ann.getEndNode().getOffset()).toString();}
+ if(content.length()>finalEvent.length())
+finalEvent =content; 
+newFeatures.put("finalEvent",finalEvent);
+ }
+catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ }
+ 
+ 
+ for(Annotation ann : NormalizedDate)
+{ 
+ try{
+String content="";
+if(ann.getFeatures().containsKey("Day")){
+  String baseDay= ann.getFeatures().get("Day").toString(); 
+System.out.printf(baseDay+"This is ");  
+  String baseMonth= ann.getFeatures().get("Month").toString(); 
+  String baseYear= ann.getFeatures().get("Year").toString();   
+		 content= baseYear+"-"+baseMonth+"-"+baseDay;
+		 System.out.printf(content+"This is the content ");
+     }
+	 
+ else{ content = doc.getContent().getContent(ann.getStartNode().getOffset(),
+                 ann.getEndNode().getOffset()).toString();}
+ if(content.length()>finalTime.length())
+finalTime =content; 
+newFeatures.put("finalTime",finalTime);
+ }
+catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ }
+ 
+ newFeatures.put("relationship","closeRealtionMatch");
+ 
+ 
+  try{
+  annotations.add(start.getOffset(),end.getOffset(),"finalMatch", newFeatures);
+ }catch(InvalidOffsetException e){
+  throw new LuckyException(e);}
+ 
+ 
+ }}
+
+

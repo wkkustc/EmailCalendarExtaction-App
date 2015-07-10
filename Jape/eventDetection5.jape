@@ -1,0 +1,32 @@
+Phase: TargetEvent
+Input:  targetEvent Token NounChunk
+Options: control = appelt
+
+
+Rule: University3 
+(
+ {targetEvent} 
+({Token.string == "for"}|{Token.string == "FOR"}|{Token.string == "to"}|{Token.string == "To"})
+  {NounChunk} 
+):selfdefine
+-->
+:selfdefine
+{
+
+      AnnotationSet matchedAnns = (gate.AnnotationSet)bindings.get("selfdefine");
+  AnnotationSet commentTokensAs = inputAS.get("targetEvent").getContained(
+    matchedAnns.firstNode().getOffset(),
+    matchedAnns.lastNode().getOffset());
+String Root="";
+ gate.FeatureMap newFeatures= Factory.newFeatureMap();
+ gate.Annotation ann = (gate.Annotation) commentTokensAs.iterator().next();
+if (ann.getFeatures().containsKey("eventRoot"))
+{
+Root = ann.getFeatures().get("eventRoot").toString().toLowerCase();
+newFeatures.put("eventRoot",Root);
+}
+
+    newFeatures.put("rule","targetEvent5");
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"targetEvent", newFeatures);
+   inputAS.remove(ann);   
+}

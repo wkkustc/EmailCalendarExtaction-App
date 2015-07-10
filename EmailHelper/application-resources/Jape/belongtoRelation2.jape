@@ -1,0 +1,53 @@
+Phase: UniversityRelations
+
+Input: University SpaceToken OrganizationUnit 
+
+ 
+
+Rule: BelongtoRealtion
+
+(
+
+ 
+  ({OrganizationUnit}):c1
+
+ ({!SpaceToken.kind == "control"})[1,8]
+({University}):c3 
+
+):belongtoRealtion2
+
+ 
+
+-->
+
+:belongtoRealtion2
+
+  {
+
+       try{ gate.AnnotationSet matchedCompanies=(gate.AnnotationSet) bindings.get("c1");
+    Annotation person1=matchedCompanies.iterator().next();
+String content1 = doc.getContent().getContent(person1.getStartNode().getOffset(),
+                 person1.getEndNode().getOffset()).toString();
+ 
+    gate.AnnotationSet matchedVerb=(gate.AnnotationSet) bindings.get("c3");
+    Annotation university1=matchedVerb.iterator().next();
+    String content3 = doc.getContent().getContent(university1.getStartNode().getOffset(),
+                 university1.getEndNode().getOffset()).toString();
+ String content2 = "";
+    gate.AnnotationSet matchedAnns= (gate.AnnotationSet) bindings.get("belongtoRealtion2");      
+    gate.FeatureMap newFeatures= Factory.newFeatureMap();
+    newFeatures.put("OrganizationUnit",person1);
+    
+    newFeatures.put("University1",university1);
+    newFeatures.put("rule","belongtoRealtion2");
+    newFeatures.put("person",content2);
+    newFeatures.put("position",content1);
+    newFeatures.put("ran",content3);
+    annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"belongtoRelation", newFeatures);}
+catch(InvalidOffsetException ioe){
+      //this should never happen
+      throw new GateRuntimeException(ioe);
+    }
+
+
+  }

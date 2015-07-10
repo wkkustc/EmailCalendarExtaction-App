@@ -1,0 +1,83 @@
+Phase: Targetloc7
+Input: emailSentDate  
+Options: control = appelt
+
+
+Rule: Targetloc3 
+(
+{emailSentDate}
+):location 
+-->
+:location
+ {
+    if(doc.getAnnotations().get("finalMatch").size()==0)
+	 { if(doc.getAnnotations().get("longestEvent").size()==0)
+	 {
+	 String finalLoc="";
+  String finalTime="";
+  String finalEvent="";
+  gate.FeatureMap newFeatures= Factory.newFeatureMap();
+
+newFeatures.put("relationship","OOPS,NO event detected"); 
+newFeatures.put("finalEvent",finalEvent);
+newFeatures.put("finalLoc",finalLoc);
+newFeatures.put("finalTime",finalTime);
+
+AnnotationSet matchedAnns= doc.getAnnotations().get("emailSentDate");
+ annotations.add(matchedAnns.firstNode(),matchedAnns.lastNode(),"finalMatch", newFeatures);
+ }	 
+	 
+	 
+	 else{
+	 AnnotationSet matchedEvent = doc.getAnnotations().get("longestEvent");
+	 Long eventStart = matchedEvent.firstNode().getOffset();
+	 AnnotationSet NormalizedDate = doc.getAnnotations().get("NormalizedDate");
+	AnnotationSet targetLocation = doc.getAnnotations().get("targetLocation");
+	 String finalLoc="";
+     String finalTime="";
+     String finalEvent="";
+	 
+	 if(NormalizedDate.size()>0){
+	 Long DateStart = NormalizedDate.firstNode().getOffset();
+	 Long distance1= Math.abs(eventStart-DateStart);
+	  for(Annotation targetDate : NormalizedDate){
+	Long DateStart2= targetDate.getStartNode().getOffset();
+	 Long distance2= Math.abs(eventStart-DateStart2);
+	 if(distance2<=distance1){
+	 try{ finalTime=doc.getContent().getContent(targetDate.getStartNode().getOffset(),
+                 targetDate.getEndNode().getOffset()).toString();}catch(InvalidOffsetException e){
+  throw new LuckyException(e);}}
+
+	 }
+	 }
+	 
+	 
+	 	 if(targetLocation.size()>0){
+	 Long DateStart = targetLocation.firstNode().getOffset();
+	 Long distance1= Math.abs(eventStart-DateStart);
+	  for(Annotation targetLoc : targetLocation){
+	Long DateStart2= targetLoc.getStartNode().getOffset();
+	 Long distance2= Math.abs(eventStart-DateStart2);
+	 if(distance2<=distance1){
+	try{  finalLoc=doc.getContent().getContent(targetLoc.getStartNode().getOffset(),
+                 targetLoc.getEndNode().getOffset()).toString();}catch(InvalidOffsetException e){
+  throw new LuckyException(e);}}
+	 }
+	 }
+	 
+gate.FeatureMap newFeatures2= Factory.newFeatureMap();
+newFeatures2.put("rule","Loose relationship match");
+newFeatures2.put("relationship","looseRealtionMatch, may not be correct");
+newFeatures2.put("finalTime",finalTime);
+newFeatures2.put("finalLoc",finalLoc); 
+  for(Annotation targetEvent : matchedEvent){
+   try{
+ finalEvent = doc.getContent().getContent(targetEvent.getStartNode().getOffset(),
+                 targetEvent.getEndNode().getOffset()).toString();
+			newFeatures2.put("finalEvent",finalEvent); 	
+		annotations.add(matchedEvent.firstNode(),matchedEvent.lastNode(),"finalMatch", newFeatures2);	}
+             catch(InvalidOffsetException e){
+  throw new LuckyException(e);}}
+
+ }
+ }}

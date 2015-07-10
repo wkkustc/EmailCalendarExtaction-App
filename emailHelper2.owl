@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY swrl "http://www.w3.org/2003/11/swrl#" >
+    <!ENTITY swrlb "http://www.w3.org/2003/11/swrlb#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY cu "http://localhost/ConceptUpper.owl#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY sa "http://localhost/SemanticAssistants.owl#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY protege "http://protege.stanford.edu/plugins/owl/protege#" >
+    <!ENTITY xsp "http://www.owl-ontologies.com/2005/08/07/xsp.owl#" >
+]>
+
+
+<rdf:RDF xmlns="http://localhost/PersonLocationExtractor.owl#"
+     xml:base="http://localhost/PersonLocationExtractor.owl"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+     xmlns:xsp="http://www.owl-ontologies.com/2005/08/07/xsp.owl#"
+     xmlns:sa="http://localhost/SemanticAssistants.owl#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:cu="http://localhost/ConceptUpper.owl#">
+    <owl:Ontology rdf:about="http://localhost/PersonLocationExtractor.owl">
+        <owl:imports rdf:resource="http://localhost/SemanticAssistants.owl"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#LocationAnnotation -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#LocationAnnotation">
+        <sa:hasGATEName rdf:datatype="&xsd;string">Location</sa:hasGATEName>
+        <sa:isInAnnotationSet xml:lang="en"></sa:isInAnnotationSet>
+        <sa:hasFeature xml:lang="en">locType</sa:hasFeature>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#LocationAnnotationOutput -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#LocationAnnotationOutput">
+        <sa:hasGATEName rdf:datatype="&xsd;string">Location</sa:hasGATEName>
+        <sa:isPerDocument rdf:datatype="&xsd;boolean">true</sa:isPerDocument>
+        <cu:isActualArtifact rdf:resource="http://localhost/PersonLocationExtractor.owl#LocationAnnotation"/>
+        <cu:isProducedBy rdf:resource="http://localhost/PersonLocationExtractor.owl#PersonLocationExtractor"/>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#LongestEvent -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#LongestEvent">
+        <rdf:type rdf:resource="&sa;GATEAnnotation"/>
+        <sa:hasGATEName>longestEvent</sa:hasGATEName>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#LongestEventOutput -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#LongestEventOutput">
+        <rdf:type rdf:resource="&sa;GATE_OutputArtifact"/>
+        <sa:isPerDocument>true</sa:isPerDocument>
+        <sa:hasGATEName>longestEvent</sa:hasGATEName>
+        <cu:isActualArtifact rdf:resource="http://localhost/PersonLocationExtractor.owl#LongestEvent"/>
+        <cu:isProducedBy rdf:resource="http://localhost/PersonLocationExtractor.owl#PersonLocationExtractor"/>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#MostFrequentEventOutput -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#MostFrequentEventOutput">
+        <rdf:type rdf:resource="&sa;GATE_OutputArtifact"/>
+        <sa:hasGATEName rdf:datatype="&xsd;string">topRankingEvent</sa:hasGATEName>
+        <cu:isActualArtifact rdf:resource="http://localhost/PersonLocationExtractor.owl#MostFrequnetEvent"/>
+        <cu:isProducedBy rdf:resource="http://localhost/PersonLocationExtractor.owl#PersonLocationExtractor"/>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#MostFrequnetEvent -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#MostFrequnetEvent">
+        <rdf:type rdf:resource="&sa;GATEAnnotation"/>
+        <sa:hasGATEName rdf:datatype="&xsd;string">topRankingEvent</sa:hasGATEName>
+        <sa:isInAnnotationSet xml:lang="en"></sa:isInAnnotationSet>
+        <sa:hasFeature xml:lang="en">topRankingEvent</sa:hasFeature>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#PersonAnnotation -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#PersonAnnotation">
+        <rdf:type rdf:resource="&sa;GATEAnnotation"/>
+        <sa:hasGATEName rdf:datatype="&xsd;string">finalMatch</sa:hasGATEName>
+        <sa:hasFeature>finalTime</sa:hasFeature>
+        <sa:isInAnnotationSet xml:lang="en"></sa:isInAnnotationSet>
+        <sa:hasFeature xml:lang="en">finalEvent</sa:hasFeature>
+        <sa:hasFeature>relationship</sa:hasFeature>
+        <sa:hasFeature>finalLoc</sa:hasFeature>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#PersonAnnotationOutput -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#PersonAnnotationOutput">
+        <rdf:type rdf:resource="&sa;GATE_OutputArtifact"/>
+        <sa:hasGATEName rdf:datatype="&xsd;string">finalMatch</sa:hasGATEName>
+        <sa:isPerDocument rdf:datatype="&xsd;boolean">true</sa:isPerDocument>
+        <cu:isActualArtifact rdf:resource="http://localhost/PersonLocationExtractor.owl#PersonAnnotation"/>
+        <cu:isProducedBy rdf:resource="http://localhost/PersonLocationExtractor.owl#PersonLocationExtractor"/>
+        <cu:hasFormat rdf:resource="&sa;Standard_GATEAnnotation_Format"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://localhost/PersonLocationExtractor.owl#PersonLocationExtractor -->
+
+    <owl:NamedIndividual rdf:about="http://localhost/PersonLocationExtractor.owl#PersonLocationExtractor">
+        <rdf:type rdf:resource="&sa;GATEPipeline"/>
+        <rdf:type rdf:resource="&sa;NLPTool"/>
+        <sa:hasGATEName rdf:datatype="&xsd;string">EmailHelper</sa:hasGATEName>
+        <rdfs:comment rdf:datatype="&xsd;string">Identifies and locates persons and locations in a document</rdfs:comment>
+        <sa:publishAsNLPService rdf:datatype="&xsd;boolean">true</sa:publishAsNLPService>
+        <sa:appFileName xml:lang="en">../Resources/GatePipelines/EmailHelper/application.xgapp</sa:appFileName>
+        <cu:hasLabel xml:lang="en">EmailHelper</cu:hasLabel>
+        <sa:hasOutputNaturalLanguage rdf:resource="&cu;fr"/>
+        <sa:hasInputNaturalLanguage rdf:resource="&cu;fr"/>
+        <cu:producesOutput rdf:resource="http://localhost/PersonLocationExtractor.owl#PersonAnnotationOutput"/>
+        <cu:hasFormat rdf:resource="&sa;GATECorpusPipeline_Format"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net -->
+

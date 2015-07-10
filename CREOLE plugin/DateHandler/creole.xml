@@ -1,0 +1,20 @@
+<!-- creole.xml DateHandler -->
+<!--  Administrator, 30/3/2014 -->
+
+<!--
+This file just references the JAR file that contains the compiled resource.
+Configuration is contained in the @CreoleResource annotation on 
+DateHandler.dateHandler.
+-->
+
+<CREOLE-DIRECTORY>
+  <CREOLE>
+    <RESOURCE>
+      <JAR SCAN="true">DateHandler.jar</JAR>
+      <NAME>DateHandler</NAME>                                            
+      <CLASS>DateHandler.dateHandler</CLASS>
+      <COMMENT>Brilliant</COMMENT>
+      <INTERFACE>gate.Document</INTERFACE>
+    </RESOURCE>
+  </CREOLE>
+</CREOLE-DIRECTORY>

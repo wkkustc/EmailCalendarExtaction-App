@@ -1,0 +1,5 @@
+passiveEventVerb.lst:passiveEventVerb
+activeEventVerb.lst:activeEventVerb
+myLocation.lst:myLocation
+dates.lst:date:day
+event.lst:event
